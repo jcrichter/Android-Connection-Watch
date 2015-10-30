@@ -1,8 +1,10 @@
 package csc414.myapplication;
 
 import android.app.ActivityManager;
+import android.content.Context;
 
 import java.util.List;
+
 
 /**
  * Created by coltonladner on 10/24/15.
@@ -16,7 +18,7 @@ public class AppList {
 
     AppList() {
 
-        actMan = (ActivityManager) getSystemService(Context, ACTIVITY_SERVICE);
+        actMan = getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
@@ -28,7 +30,7 @@ public class AppList {
         procList = null;
         servList = null;
 
-        actMan = (ActivityManager) getSystemService(Context, ACTIVITY_SERVICE);
+        actMan = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
