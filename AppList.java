@@ -9,10 +9,10 @@ import java.util.List;
  */
 public class AppList {
 
-    final private ActivityManager actMan;
-    final private List<ActivityManager.RunningAppProcessInfo> procList;
-    final private List<ActivityManager.RunningServiceInfo> servList;
-    final private int maxServices = 255;
+    static private ActivityManager actMan;
+    static private List<ActivityManager.RunningAppProcessInfo> procList;
+    static private List<ActivityManager.RunningServiceInfo> servList;
+    static private int maxServices = 255;
 
     AppList() {
 
