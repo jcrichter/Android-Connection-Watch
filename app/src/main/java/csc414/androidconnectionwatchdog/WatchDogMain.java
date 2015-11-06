@@ -1,7 +1,9 @@
 package csc414.androidconnectionwatchdog;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+//TODO
+//Import our databases into our main java file (this one)
 
 public class WatchDogMain extends AppCompatActivity {
 
@@ -49,13 +53,25 @@ public class WatchDogMain extends AppCompatActivity {
             case R.id.action_add_verified_connection:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Add a verified connection");
-                builder.setMessage("What do you want to do?");
+                //builder.setMessage("What connection do you want whitelisted?");
                 final EditText inputField = new EditText(this);
                 builder.setView(inputField);
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("MainActivity", inputField.getText().toString());
+                        //Here we will grab the user connection input from the verified connection alert
+                        //We could catch valid connection input from the user with a regular expression
+                        //As well as matching them to connections that we have found and stored in a database
+                        String verifiedConnection = inputField.getText().toString();
+                        //Log.d("WatchDogMain", inputField.getText().toString());
+                        ConnectionDBHelper helper = new ConnectionDBHelper(WatchDogMain.this);
+                        SQLiteDatabase db = helper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+                        //Add the verifiedConnection to the CONNECTION column of our database.
+                        values.clear();
+                        values.put(ConnectionContract.Columns.CONNECTION, verifiedConnection);
+
+                        db.insertWithOnConflict(ConnectionContract.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
                     }
                 });
 
@@ -69,4 +85,11 @@ public class WatchDogMain extends AppCompatActivity {
         }
        // return super.onOptionsItemSelected(item);
     }
+    //TODO
+    //We need to figure out a way to use Android SQLite to store white-listed connections
+    //H
+   // db -> ConnectionContract.java
 }
+
+
+
