@@ -1,22 +1,24 @@
 package csc414.myapplication;
 
+
 import android.app.ActivityManager;
+import android.content.Context;
 
 import java.util.List;
 
 /**
  * Created by coltonladner on 10/24/15.
  */
-public class AppList {
+public class AppList{
 
-    final private ActivityManager actMan;
-    final private List<ActivityManager.RunningAppProcessInfo> procList;
-    final private List<ActivityManager.RunningServiceInfo> servList;
-    final private int maxServices = 255;
+    static private ActivityManager actMan;
+    static private List<ActivityManager.RunningAppProcessInfo> procList;
+    static private List<ActivityManager.RunningServiceInfo> servList;
+    static private int maxServices = 255;
 
     AppList() {
 
-        actMan = (ActivityManager) getSystemService(Context, ACTIVITY_SERVICE);
+        actMan = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
@@ -28,7 +30,7 @@ public class AppList {
         procList = null;
         servList = null;
 
-        actMan = (ActivityManager) getSystemService(Context, ACTIVITY_SERVICE);
+        actMan = (ActivityManager)con.getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
@@ -36,7 +38,7 @@ public class AppList {
 
     public int getSizeProc(){
 
-        return proclist.size();
+        return procList.size();
 
     }
 
@@ -58,18 +60,16 @@ public class AppList {
 
     }
 
-    /* public TYPE getServiceList(){
+    public String getServElementName(int element){
 
-        this.updateLists();
-
+        return servList.get(element).toString();
 
     }
 
-    public TYPE getProcessList(){
+    public String getProcElementName(int element){
 
-        this.updateLists();
+        return procList.get(element).processName;
 
-
-    }*/
+    }
 
 }
