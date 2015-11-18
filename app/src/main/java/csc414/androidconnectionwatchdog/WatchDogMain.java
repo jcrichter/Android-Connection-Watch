@@ -41,19 +41,15 @@ public class WatchDogMain extends AppCompatActivity {
 
         //testing AppList functions
 
-        /*
-        mContext = getApplicationContext();
-        BaileyAppList bList = new BaileyAppList(mContext); //give it a context thing
-        String stuff = bList.firstName();
-        String oth = bList.firstName();
-        */
-
         //context objects seem to only not be null when made in the onCreate function. can't get around this
         mContext = getApplicationContext();
         AppList listOApps = new AppList(mContext);
         int numP = listOApps.getSizeProc();
         int numS = listOApps.getSizeServ();
 
+        listOApps.updateLists();
+        numS = listOApps.getSizeServ();
+        numP = listOApps.getSizeProc();
         //end AppList Test
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

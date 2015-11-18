@@ -15,18 +15,20 @@ public class AppList{
     static private List<ActivityManager.RunningAppProcessInfo> procList;
     static private List<ActivityManager.RunningServiceInfo> servList;
     static private int maxServices = 255;
+    private Context myCon;
 
-    AppList(Context context) {
+    public AppList(Context context) {
 
         //actMan = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        actMan = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE); //aww yis
+        myCon = context;
+        actMan = (ActivityManager)myCon.getSystemService(Context.ACTIVITY_SERVICE); //aww yis
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
     }
 
     public void updateLists() {
-
+        /*
         actMan = null;
         procList = null;
         servList = null;
@@ -34,7 +36,14 @@ public class AppList{
         actMan = (ActivityManager) WatchDogMain.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
+        */
+        actMan = null;
+        procList = null;
+        servList = null;
 
+        actMan = (ActivityManager)myCon.getSystemService(Context.ACTIVITY_SERVICE); //aww yis
+        procList = actMan.getRunningAppProcesses();
+        servList = actMan.getRunningServices(maxServices);
     }
 
     public int getSizeProc(){
