@@ -2,6 +2,7 @@ package csc414.androidconnectionwatchdog;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,6 +19,18 @@ import android.widget.EditText;
 //Import our databases into our main java file (this one)
 
 public class WatchDogMain extends AppCompatActivity {
+    //testing AppList
+    private static Context mContext;
+    private static WatchDogMain instance;
+    public static WatchDogMain getInstance() {
+        return instance;
+    }
+
+    public static Context getContext() {
+        return mContext;
+    }
+
+    //end test AppList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +38,23 @@ public class WatchDogMain extends AppCompatActivity {
         setContentView(R.layout.activity_watch_dog_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //testing AppList functions
+
+        /*
+        mContext = getApplicationContext();
+        BaileyAppList bList = new BaileyAppList(mContext); //give it a context thing
+        String stuff = bList.firstName();
+        String oth = bList.firstName();
+        */
+
+        //context objects seem to only not be null when made in the onCreate function. can't get around this
+        mContext = getApplicationContext();
+        AppList listOApps = new AppList(mContext);
+        int numP = listOApps.getSizeProc();
+        int numS = listOApps.getSizeServ();
+
+        //end AppList Test
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
