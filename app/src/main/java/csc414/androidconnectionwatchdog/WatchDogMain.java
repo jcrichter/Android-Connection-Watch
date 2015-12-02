@@ -1,13 +1,18 @@
 package csc414.androidconnectionwatchdog;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,7 +35,7 @@ public class WatchDogMain extends AppCompatActivity {
     static ListView list;
     static ArrayAdapter<String> adapter;
     static AppList aList;
-
+    static int notificationCounter;
     //testing AppList
     private static Context mContext;
     private static WatchDogMain instance;
@@ -61,6 +66,14 @@ public class WatchDogMain extends AppCompatActivity {
 
         list.setAdapter(adapter); //Attach adapter to list view
         //list.setBackgroundColor(Color.BLACK);  //Used this so I could see the list.
+        
+
+        //added
+        IpTest badIp = new IpTest("189.58.78.63");
+        IpInfo badIpInfo = badIp.getIpInfoObject();
+        badIpInfo.getHoneyThreatScore();
+        //added
+
 
         this.writeProcessesToGUI();
         this.writeServicesToGUI();
@@ -197,11 +210,31 @@ public class WatchDogMain extends AppCompatActivity {
         }
         // return super.onOptionsItemSelected(item);
     }
+    public static void Notify(String badIp){
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(WatchDogMain.getContext())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Warning from Connection Watchdog")
+                        .setContentText("Harmful Ip: "+ badIp);
+
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(WatchDogMain.mContext, WatchDogMain.class);
+        mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(WatchDogMain.mContext,0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) WatchDogMain.getContext().getSystemService(WatchDogMain.mContext.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(notificationCounter++, mBuilder.build());
+    }
+}
     //TODO
     //We need to figure out a way to use Android SQLite to store white-listed connections
     //H
     // db -> ConnectionContract.java
-}
+
 
 
 
