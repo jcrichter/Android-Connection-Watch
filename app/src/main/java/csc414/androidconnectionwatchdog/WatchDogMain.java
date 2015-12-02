@@ -58,11 +58,10 @@ public class WatchDogMain extends AppCompatActivity {
         //btn = (Button) findViewById(R.id.button);       //Get the first button in xml.
         list = (ListView) findViewById(R.id.listView);  //Get the first listview in xml.
         list.setBackgroundColor(Color.BLACK);
-        arrayList = new ArrayList<String>();            //Setup ArrayList of string to hold the service names.
-        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList); //May have to change this layout to suit the gui.
 
+        arrayList = new ArrayList<String>();            //Setup ArrayList of string to hold the service names.
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList); //May have to change this layout to suit the gui.
         list.setAdapter(adapter); //Attach adapter to list view
-        //list.setBackgroundColor(Color.BLACK);  //Used this so I could see the list.
 
         this.writeProcessesToGUI();
         this.writeServicesToGUI();
@@ -136,7 +135,7 @@ public class WatchDogMain extends AppCompatActivity {
 
             ConnectionFinder conTest = new ConnectionFinder(aList.getProcElement(lcv).pid);
             String ipResult = conTest.getConnection();
-            arrayList.add(aList.getProcElement(lcv).processName + " -- " + ipResult);
+            arrayList.add("PID : " + aList.getProcElement(lcv).pid + "\nName : " + aList.getProcElement(lcv).processName + "\nIP : " + ipResult);
             lcv++;
 
         }
