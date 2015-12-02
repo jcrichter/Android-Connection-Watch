@@ -31,6 +31,7 @@ public class WatchDogMain extends AppCompatActivity {
     static ListView list;
     static ArrayAdapter<String> adapter;
     static AppList aList;
+    static int Threashold = 150;
 
     //testing AppList
     private static Context mContext;
