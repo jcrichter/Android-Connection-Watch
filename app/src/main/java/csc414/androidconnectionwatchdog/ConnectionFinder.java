@@ -137,7 +137,11 @@ public class ConnectionFinder {
 
     public String getConnection(){
         checkLog();
-        return chosenOne.getDst();
+        if(chosenOne == null){
+            return "Error.  chosenOne is null.";
+        }else {
+            return chosenOne.getDst();
+        }
     }
 
 }
