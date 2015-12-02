@@ -1,4 +1,4 @@
-package csc414.myapplication;
+package csc414.androidconnectionwatchdog;
 
 
 import android.app.ActivityManager;
@@ -15,33 +15,35 @@ public class AppList{
     static private List<ActivityManager.RunningAppProcessInfo> procList;
     static private List<ActivityManager.RunningServiceInfo> servList;
     static private int maxServices = 255;
-<<<<<<< HEAD
-    static private Context con;
+    private Context myCon;
 
-    AppList() {
+    public AppList() {
 
-        actMan = (ActivityManager)con.getSystemService(Context.ACTIVITY_SERVICE);
-=======
-
-    AppList() {
-
-        actMan = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
->>>>>>> 223695e83c6eba9a31af539de9c76f94918889aa
+        //actMan = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        myCon = WatchDogMain.getContext();
+        actMan = (ActivityManager)myCon.getSystemService(Context.ACTIVITY_SERVICE); //aww yis
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
 
     }
 
     public void updateLists() {
-
+        /*
         actMan = null;
         procList = null;
         servList = null;
 
-        actMan = (ActivityManager)con.getSystemService(Context.ACTIVITY_SERVICE);
+        actMan = (ActivityManager) WatchDogMain.getContext().getSystemService(Context.ACTIVITY_SERVICE);
         procList = actMan.getRunningAppProcesses();
         servList = actMan.getRunningServices(maxServices);
+        */
+        actMan = null;
+        procList = null;
+        servList = null;
 
+        actMan = (ActivityManager)myCon.getSystemService(Context.ACTIVITY_SERVICE); //aww yis
+        procList = actMan.getRunningAppProcesses();
+        servList = actMan.getRunningServices(maxServices);
     }
 
     public int getSizeProc(){
