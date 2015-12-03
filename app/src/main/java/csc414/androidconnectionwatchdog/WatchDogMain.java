@@ -64,6 +64,13 @@ public class WatchDogMain extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList); //May have to change this layout to suit the gui.
         list.setAdapter(adapter); //Attach adapter to list view
 
+        //TO TEST BAD IP
+        //IpTest badIp = new IpTest("189.58.78.63");
+        //IpInfo badIpInfo = badIp.getIpInfoObject();
+        //badIpInfo.getHoneyThreatScore();
+
+        //end test
+
         this.writeProcessesToGUI();
         this.writeServicesToGUI();
 

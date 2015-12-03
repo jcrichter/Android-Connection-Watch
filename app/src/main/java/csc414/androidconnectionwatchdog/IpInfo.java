@@ -1,5 +1,11 @@
 package csc414.androidconnectionwatchdog;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+
 import java.util.regex.Pattern;
 
 /**
@@ -13,6 +19,7 @@ public class IpInfo {
     private int[] honeyResArr;
     private String honeyThreatDescription;
     private String honeySearchEngineName; //if the ip was a search engine, list which one
+    private static int notificationCounter;
 
     public IpInfo(String honeyIp) { //input MUST be result from IpTest.honeyConnect()
         honeyResArr = new int[4];
@@ -119,6 +126,10 @@ public class IpInfo {
     }
 
     public int getHoneyThreatScore () {
+        if(this.honeyThreatScore>15){
+            Notify(this.honeyResult);
+        }
+
         return this.honeyThreatScore;
     }
 
@@ -128,5 +139,23 @@ public class IpInfo {
 
     public String getRawHoneyResult () { //return the honeypot dns query result
         return this.honeyResult;
+    }
+
+    public void Notify(String BadIp){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(WatchDogMain.getContext())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("Warning from Connection Watchdog")
+                        .setContentText("Harmful Ip: "+BadIp);
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(WatchDogMain.getContext(), WatchDogMain.class);
+        mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(WatchDogMain.getContext(),0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) WatchDogMain.getContext().getSystemService(WatchDogMain.getContext().NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(notificationCounter++, mBuilder.build());
     }
 }
