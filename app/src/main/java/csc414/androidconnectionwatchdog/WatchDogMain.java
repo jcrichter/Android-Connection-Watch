@@ -14,16 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import java.util.ArrayList;
+import java.util.List;
+import android.widget.Spinner;
+//import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 //TODO
 //Import our databases into our main java file (this one)
 
-public class WatchDogMain extends AppCompatActivity {
+public class WatchDogMain extends AppCompatActivity implements OnItemSelectedListener{
 
     static ArrayList<String> arrayList;
     static Button btn;
@@ -155,52 +159,158 @@ public class WatchDogMain extends AppCompatActivity {
         return true;
     }
 
+    //This function should now be obsolete due to dropdown, but just in case, don't delete it
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        switch (item.getItemId()) {
+//            //Handler for adding a new verified connection
+//            case R.id.action_add_verified_connection:
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("Add a verified connection");
+//                //builder.setMessage("What connection do you want whitelisted?");
+//                final EditText inputField = new EditText(this);
+//                builder.setView(inputField);
+//                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //Here we will grab the user connection input from the verified connection alert
+//                        //We could catch valid connection input from the user with a regular expression
+//                        //As well as matching them to connections that we have found and stored in a database
+//                        String verifiedConnection = inputField.getText().toString();
+//                        //Log.d("WatchDogMain", inputField.getText().toString());
+//                        ConnectionDBHelper helper = new ConnectionDBHelper(WatchDogMain.this);
+//                        SQLiteDatabase db = helper.getWritableDatabase();
+//                        ContentValues values = new ContentValues();
+//                        //Add the verifiedConnection to the CONNECTION column of our database.
+//                        values.clear();
+//                        values.put(ConnectionContract.Columns.CONNECTION, verifiedConnection);
+//
+//                        db.insertWithOnConflict(ConnectionContract.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+//                    }
+//                });
+//
+//                builder.setNegativeButton("Cancel", null);
+//
+//                builder.create().show();
+//                return true;
+//
+//            default:
+//                return false;
+//        }
+//        // return super.onOptionsItemSelected(item);
+//    }
+    //TODO
+    //We need to figure out a way to use Android SQLite to store white-listed connections
+    // db -> ConnectionContract.java
+
+    //Dropdown menu handler
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            //Handler for adding a new verified connection
-            case R.id.action_add_verified_connection:
+    public void onCreateDropdown(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_watch_dog_main);
+
+        //Dropdown element
+        //IGNORE THIS ERROR, IT'S BECAUSE I HAVEN'T IMPLEMENTED THE XML FOR THE DROPDOWN
+        Spinner dropDown = (Spinner) findViewById(R.id.dropDown);
+
+        dropDown.setOnItemSelectedListener(this);
+
+        List<String> dropDownActions = new ArrayList<String>();
+        dropDownActions.add("Refresh");
+        dropDownActions.add("Whitelist A Connection");
+        dropDownActions.add("Show IP Connections");
+
+        //dropdown array adapter
+        ArrayAdapter<String> dropDataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dropDownActions);
+        dropDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDown.setAdapter(dropDataAdapter);
+        dropDown.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                String item = parent.getSelectedItem().toString();
+
+                switch (item) {
+                    case "Refresh":
+                        //Refresh the list if the data has changed in the adapter
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case "Whitelist A Connection":
+                        //Set the text here
+
+                        //I need to fix the alert builder commented out for the moment
+
+                        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Add a verified connection");
+                        //builder.setMessage("What connection do you want whitelisted?");
+                        final EditText inputField = new EditText(this);
+                        builder.setView(inputField);
+                        //Add Connection Handler
+                        //TODO Add these items to an array when the user clicks add
+                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Here we will grab the user connection input from the verified connection alert
+                                //We could catch valid connection input from the user with a regular expression
+                                String verifiedConnection = inputField.getText().toString();
+                                //Store to an array. I'm going to sleep.
+                            }
+                        });*/
+                        break;
+
+                    case "Show IP Connections":
+                        //This would call some filter function given by Colton or Bailey
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    //Event handler within dropdown
+    //We can fire an event for each item chosen
+
+    public void onItemSelectedListener(AdapterView<?> parent, View view, long id) {
+        //Select dropdown item. Item should get the text set in onCreateDropDown()
+        String item = parent.getSelectedItem().toString();
+
+        switch(item) {
+            case "Refresh":
+                //Refresh the list if the data has changed in the adapter
+                adapter.notifyDataSetChanged();
+                break;
+            case "Whitelist A Connection":
+                //Set the text here
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Add a verified connection");
                 //builder.setMessage("What connection do you want whitelisted?");
                 final EditText inputField = new EditText(this);
                 builder.setView(inputField);
+                //Add Connection Handler
+                //TODO Add these items to an array when the user clicks add
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Here we will grab the user connection input from the verified connection alert
                         //We could catch valid connection input from the user with a regular expression
-                        //As well as matching them to connections that we have found and stored in a database
                         String verifiedConnection = inputField.getText().toString();
-                        //Log.d("WatchDogMain", inputField.getText().toString());
-                        ConnectionDBHelper helper = new ConnectionDBHelper(WatchDogMain.this);
-                        SQLiteDatabase db = helper.getWritableDatabase();
-                        ContentValues values = new ContentValues();
-                        //Add the verifiedConnection to the CONNECTION column of our database.
-                        values.clear();
-                        values.put(ConnectionContract.Columns.CONNECTION, verifiedConnection);
-
-                        db.insertWithOnConflict(ConnectionContract.TABLE, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                        //Store to an array. I'm going to sleep.
                     }
                 });
+                break;
 
-                builder.setNegativeButton("Cancel", null);
-
-                builder.create().show();
-                return true;
-
-            default:
-                return false;
+            case "Show IP Connections":
+                //This would call some filter function given by Colton or Bailey
+                break;
         }
-        // return super.onOptionsItemSelected(item);
+
     }
-    //TODO
-    //We need to figure out a way to use Android SQLite to store white-listed connections
-    //H
-    // db -> ConnectionContract.java
 }
 
 
