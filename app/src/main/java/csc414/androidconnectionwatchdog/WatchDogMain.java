@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,12 +23,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 import android.widget.Spinner;
-//import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 //TODO
 //Import our databases into our main java file (this one)
 
-public class WatchDogMain extends AppCompatActivity implements OnItemSelectedListener{
+public class WatchDogMain extends AppCompatActivity{
 
     static ArrayList<String> arrayList;
     static Button btn;
@@ -208,13 +208,13 @@ public class WatchDogMain extends AppCompatActivity implements OnItemSelectedLis
 
     //Dropdown menu handler
     @Override
-    public void onCreateDropdown(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_watch_dog_main);
+    public void onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_watch_dog_main, menu);
+        MenuItem item = menu.findItem(R.id.dropDown);
 
         //Dropdown element
         //IGNORE THIS ERROR, IT'S BECAUSE I HAVEN'T IMPLEMENTED THE XML FOR THE DROPDOWN
-        Spinner dropDown = (Spinner) findViewById(R.id.dropDown);
+        Spinner dropDown = (Spinner) MenuItemCompat.getActionView(item);
 
         dropDown.setOnItemSelectedListener(this);
 
@@ -243,23 +243,23 @@ public class WatchDogMain extends AppCompatActivity implements OnItemSelectedLis
 
                         //I need to fix the alert builder commented out for the moment
 
-                        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Add a verified connection");
-                        //builder.setMessage("What connection do you want whitelisted?");
-                        final EditText inputField = new EditText(this);
-                        builder.setView(inputField);
-                        //Add Connection Handler
-                        //TODO Add these items to an array when the user clicks add
-                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Here we will grab the user connection input from the verified connection alert
-                                //We could catch valid connection input from the user with a regular expression
-                                String verifiedConnection = inputField.getText().toString();
-                                //Store to an array. I'm going to sleep.
-                            }
-                        });*/
-                        break;
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                        builder.setTitle("Add a verified connection");
+//                        //builder.setMessage("What connection do you want whitelisted?");
+//                        final EditText inputField = new EditText(this);
+//                        builder.setView(inputField);
+//                        //Add Connection Handler
+//                        //TODO Add these items to an array when the user clicks add
+//                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                //Here we will grab the user connection input from the verified connection alert
+//                                //We could catch valid connection input from the user with a regular expression
+//                                String verifiedConnection = inputField.getText().toString();
+//                                //Store to an array. I'm going to sleep.
+//                            }
+                       // });
+                       // break;
 
                     case "Show IP Connections":
                         //This would call some filter function given by Colton or Bailey
