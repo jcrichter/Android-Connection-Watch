@@ -1,8 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".WatchDogMain">
-    <item android:id="@+id/action_add_verified_connection"
+    <!--<item android:id="@+id/action_add_verified_connection"
     app:showAsAction="always"
     android:icon="@android:drawable/ic_menu_add"
-    android:title="Add Connection" />
+    android:title="Add Connection" />-->
+    <item android:id="@+id/dropDown"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.Spinner"
+        android:title="dropDown"
+        />
+
 </menu>

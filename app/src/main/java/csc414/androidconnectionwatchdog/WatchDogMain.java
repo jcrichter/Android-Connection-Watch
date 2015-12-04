@@ -9,18 +9,23 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.widget.Spinner;
 import java.util.ArrayList;
+import java.util.List;
+import android.widget.AdapterView.OnItemSelectedListener;
+
 //TODO
 //Import our databases into our main java file (this one)
 
@@ -63,8 +68,6 @@ public class WatchDogMain extends AppCompatActivity {
         arrayList = new ArrayList<String>();            //Setup ArrayList of string to hold the service names.
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList); //May have to change this layout to suit the gui.
         list.setAdapter(adapter); //Attach adapter to list view
-
-
 
         //TO TEST BAD IP
         //IpTest badIp = new IpTest("189.58.78.63");
@@ -152,16 +155,6 @@ public class WatchDogMain extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();     //Notify the adapter that the list has changed so it can update the gui.
 
-        //for Notification
-        ConnectionFinder conTest = new ConnectionFinder(aList.getProcElement(0).pid);
-        ArrayList<String> IPs = conTest.getAllIp();
-        for(String IP : IPs){
-            IpTest TestIt = new IpTest(IP);
-            IpInfo TestInfo = TestIt.getIpInfoObject();
-            TestInfo.getHoneyThreatScore();
-        }
-        //
-
     }
 
     public static void clearGUI(){
@@ -170,16 +163,16 @@ public class WatchDogMain extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
     }
-
-
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_watch_dog_main, menu);
         return true;
     }
+*/
 
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -228,5 +221,117 @@ public class WatchDogMain extends AppCompatActivity {
     // db -> ConnectionContract.java
 }
 
+*/
 
+    //Dropdown menu handler
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_watch_dog_main, menu);
+        MenuItem item = menu.findItem(R.id.dropDown);
 
+        //Dropdown element
+        //IGNORE THIS ERROR, IT'S BECAUSE I HAVEN'T IMPLEMENTED THE XML FOR THE DROPDOWN
+        Spinner dropDown = (Spinner) MenuItemCompat.getActionView(item);
+
+        List<String> dropDownActions = new ArrayList<String>();
+        dropDownActions.add("Refresh");
+        dropDownActions.add("Whitelist A Connection");
+        dropDownActions.add("Show IP Connections");
+
+        //dropdown array adapter
+        ArrayAdapter<String> dropDataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, dropDownActions);
+        dropDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDown.setAdapter(dropDataAdapter);
+        dropDown.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                String item = parent.getSelectedItem().toString();
+
+                switch (item) {
+                    case "Refresh":
+                        //Refresh the list if the data has changed in the adapter
+                        WatchDogMain.clearGUI();
+                        WatchDogMain.writeProcessesToGUI();
+                        WatchDogMain.writeServicesToGUI();
+                        break;
+                    case "Whitelist A Connection":
+                        //Set the text here
+
+                        //I need to fix the alert builder commented out for the moment
+
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                        builder.setTitle("Add a verified connection");
+//                        //builder.setMessage("What connection do you want whitelisted?");
+//                        final EditText inputField = new EditText(this);
+//                        builder.setView(inputField);
+//                        //Add Connection Handler
+//                        //TODO Add these items to an array when the user clicks add
+//                        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                //Here we will grab the user connection input from the verified connection alert
+//                                //We could catch valid connection input from the user with a regular expression
+//                                String verifiedConnection = inputField.getText().toString();
+//                                //Store to an array. I'm going to sleep.
+//                            }
+                        // });
+                        // break;
+
+                    case "Show IP Connections":
+                        //This would call some filter function given by Colton or Bailey
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        return true;
+    }
+
+    //Event handler within dropdown
+    //We can fire an event for each item chosen
+
+    /*
+
+    public void onItemSelectedListener(AdapterView<?> parent, View view, long id) {
+        //Select dropdown item. Item should get the text set in onCreateDropDown()
+        String item = parent.getSelectedItem().toString();
+
+        switch(item) {
+            case "Refresh":
+                //Refresh the list if the data has changed in the adapter
+                WatchDogMain.clearGUI();
+                WatchDogMain.writeProcessesToGUI();
+                WatchDogMain.writeServicesToGUI();
+                break;
+            case "Whitelist A Connection":
+                //Set the text here
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Add a verified connection");
+                //builder.setMessage("What connection do you want whitelisted?");
+                final EditText inputField = new EditText(this);
+                builder.setView(inputField);
+                //Add Connection Handler
+                //TODO Add these items to an array when the user clicks add
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Here we will grab the user connection input from the verified connection alert
+                        //We could catch valid connection input from the user with a regular expression
+                        String verifiedConnection = inputField.getText().toString();
+                        //Store to an array. I'm going to sleep.
+                    }
+                });
+                break;
+
+            case "Show IP Connections":
+                //This would call some filter function given by Colton or Bailey
+                break;
+        }
+
+    }
+    */
+}
