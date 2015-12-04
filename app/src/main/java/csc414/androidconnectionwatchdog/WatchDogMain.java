@@ -152,12 +152,6 @@ public class WatchDogMain extends AppCompatActivity{
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_watch_dog_main, menu);
-        return true;
-    }
 
     //This function should now be obsolete due to dropdown, but just in case, don't delete it
 //    @Override
@@ -208,15 +202,13 @@ public class WatchDogMain extends AppCompatActivity{
 
     //Dropdown menu handler
     @Override
-    public void onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_watch_dog_main, menu);
         MenuItem item = menu.findItem(R.id.dropDown);
 
         //Dropdown element
         //IGNORE THIS ERROR, IT'S BECAUSE I HAVEN'T IMPLEMENTED THE XML FOR THE DROPDOWN
         Spinner dropDown = (Spinner) MenuItemCompat.getActionView(item);
-
-        dropDown.setOnItemSelectedListener(this);
 
         List<String> dropDownActions = new ArrayList<String>();
         dropDownActions.add("Refresh");
@@ -258,8 +250,8 @@ public class WatchDogMain extends AppCompatActivity{
 //                                String verifiedConnection = inputField.getText().toString();
 //                                //Store to an array. I'm going to sleep.
 //                            }
-                       // });
-                       // break;
+                        // });
+                        // break;
 
                     case "Show IP Connections":
                         //This would call some filter function given by Colton or Bailey
@@ -271,46 +263,47 @@ public class WatchDogMain extends AppCompatActivity{
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        return true;
     }
 
     //Event handler within dropdown
     //We can fire an event for each item chosen
 
-    public void onItemSelectedListener(AdapterView<?> parent, View view, long id) {
-        //Select dropdown item. Item should get the text set in onCreateDropDown()
-        String item = parent.getSelectedItem().toString();
-
-        switch(item) {
-            case "Refresh":
-                //Refresh the list if the data has changed in the adapter
-                adapter.notifyDataSetChanged();
-                break;
-            case "Whitelist A Connection":
-                //Set the text here
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Add a verified connection");
-                //builder.setMessage("What connection do you want whitelisted?");
-                final EditText inputField = new EditText(this);
-                builder.setView(inputField);
-                //Add Connection Handler
-                //TODO Add these items to an array when the user clicks add
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Here we will grab the user connection input from the verified connection alert
-                        //We could catch valid connection input from the user with a regular expression
-                        String verifiedConnection = inputField.getText().toString();
-                        //Store to an array. I'm going to sleep.
-                    }
-                });
-                break;
-
-            case "Show IP Connections":
-                //This would call some filter function given by Colton or Bailey
-                break;
-        }
-
-    }
+//    public void onItemSelectedListener(AdapterView<?> parent, View view, long id) {
+//        //Select dropdown item. Item should get the text set in onCreateDropDown()
+//        String item = parent.getSelectedItem().toString();
+//
+//        switch(item) {
+//            case "Refresh":
+//                //Refresh the list if the data has changed in the adapter
+//                adapter.notifyDataSetChanged();
+//                break;
+//            case "Whitelist A Connection":
+//                //Set the text here
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("Add a verified connection");
+//                //builder.setMessage("What connection do you want whitelisted?");
+//                final EditText inputField = new EditText(this);
+//                builder.setView(inputField);
+//                //Add Connection Handler
+//                //TODO Add these items to an array when the user clicks add
+//                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //Here we will grab the user connection input from the verified connection alert
+//                        //We could catch valid connection input from the user with a regular expression
+//                        String verifiedConnection = inputField.getText().toString();
+//                        //Store to an array. I'm going to sleep.
+//                    }
+//                });
+//                break;
+//
+//            case "Show IP Connections":
+//                //This would call some filter function given by Colton or Bailey
+//                break;
+//        }
+//
+//    }
 }
 
 
