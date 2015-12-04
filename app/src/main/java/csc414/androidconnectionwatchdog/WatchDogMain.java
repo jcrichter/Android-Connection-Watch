@@ -155,6 +155,15 @@ public class WatchDogMain extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();     //Notify the adapter that the list has changed so it can update the gui.
 
+        //for Notification
+        ConnectionFinder conTest = new ConnectionFinder(aList.getProcElement(0).pid);
+        ArrayList<String> IPs = conTest.getAllIp();
+        for(String IP : IPs){
+            IpTest TestIt = new IpTest(IP);
+            IpInfo TestInfo = TestIt.getIpInfoObject();
+            TestInfo.getHoneyThreatScore();
+            }
+        //
     }
 
     public static void clearGUI(){
