@@ -8,7 +8,5 @@
     <item android:id="@+id/dropDown"
         app:showAsAction="always"
         app:actionViewClass="android.widget.Spinner"
-        android:title="dropDown"
-        />
-
+        android:title="dropDown"/>
 </menu>
