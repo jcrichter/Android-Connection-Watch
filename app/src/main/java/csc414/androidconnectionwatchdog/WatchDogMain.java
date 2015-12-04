@@ -157,13 +157,13 @@ public class WatchDogMain extends AppCompatActivity {
 
         //for Notification
         ConnectionFinder conTest = new ConnectionFinder(aList.getProcElement(0).pid);
-//        ArrayList<String> IPs = conTest.getAllIp();
-//        for(String IP : IPs){
-//            IpTest TestIt = new IpTest(IP);
-//            IpInfo TestInfo = TestIt.getIpInfoObject();
-//            TestInfo.getHoneyThreatScore();
-//        }
-        //
+
+        ArrayList<String> IPs = conTest.getAllIp();
+        for(String IP : IPs){
+            IpTest TestIt = new IpTest(IP);
+            IpInfo TestInfo = TestIt.getIpInfoObject();
+            TestInfo.getHoneyThreatScore();
+            }
     }
 
     public static void clearGUI(){

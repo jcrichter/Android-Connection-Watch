@@ -146,7 +146,7 @@ public class IpInfo {
                 new NotificationCompat.Builder(WatchDogMain.getContext())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Warning from Connection Watchdog")
-                        .setContentText("Harmful Ip: "+BadIp);
+                        .setContentText("Harmful IP: "+BadIp);
 // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(WatchDogMain.getContext(), WatchDogMain.class);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);

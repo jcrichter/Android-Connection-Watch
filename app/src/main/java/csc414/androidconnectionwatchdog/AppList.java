@@ -58,6 +58,10 @@ public class AppList{
 
     }
 
+    public List<ActivityManager.RunningAppProcessInfo> getProcList() {
+                return procList;
+            }
+
     public ActivityManager.RunningAppProcessInfo getProcElement(int element){
 
         return procList.get(element);

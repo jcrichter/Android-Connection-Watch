@@ -9,6 +9,8 @@ public class Connection {
     private String dst;
     private String dpt;
     private String uid;
+    private int pid; //process id of the process that owns the connection
+    private String pName; //name of process
 
     public String getSrc() {
         return src;
@@ -49,6 +51,14 @@ public class Connection {
     public void setUid(String s) {
         this.uid = s;
     }
+
+    public int getPid() {return pid;}
+
+    public void setPid(int p) {this.pid = p;}
+
+    public void setPName(String n) {this.pName = n; }
+
+    public String getPName() {return this.pName; }
 
 
 }
