@@ -20,6 +20,9 @@ public class ConnectionFinder {
     private int a;
     private int b;
     private int pid;
+    ArrayList<ArrayList<Connection>> allCon; //every connection from every pid. grouped by pid
+    private ArrayList<Connection> singleConList; //every connection for a single pid
+
     private Connection chosenOne = null;
 
     public ConnectionFinder(int p){
@@ -46,9 +49,9 @@ public class ConnectionFinder {
                 String src[] = fields[1].split(":", 2);
                 String dst[] = fields[2].split(":", 2);
 
-                connection.setSrc(getAddress(src[0]));
+                connection.setSrc(getAddress6(src[0]));
                 connection.setSpt(String.valueOf(getInt16(src[1])));
-                connection.setDst(getAddress(dst[0]));
+                connection.setDst(getAddress6(dst[0]));
                 if (connection.getDst().equals("-1.-1.-1.-1")) {
                     break;
                 }
@@ -89,6 +92,73 @@ public class ConnectionFinder {
         }
         catch(Exception e) {
             System.out.println(" checknetlog() Exception: " + e.toString());
+        }
+    }
+
+    public void checkLogs() {
+        int i = 1;
+        int a;
+        String b;
+        int c;
+        AppList aList = new AppList();
+
+        allCon = new ArrayList<ArrayList<Connection>>();
+        List<ActivityManager.RunningAppProcessInfo> procs = aList.getProcList();
+        for ( ActivityManager.RunningAppProcessInfo proc : procs){
+            a = proc.pid;
+            b = String.valueOf(proc.pid);
+
+            ArrayList<Connection> connections = new ArrayList<Connection>();
+
+            try {
+                BufferedReader in = new BufferedReader(new FileReader("/proc/" + a + "/net/tcp6"));
+                String line = b;
+                int z;
+                while((line = in.readLine()) != null) {
+                    System.out.println(" tcp Netstat line: " + line);
+                    line = line.trim();
+                    String[] fields = line.split("\\s+", 10);
+                    int fieldn = 0;
+                    for(String field : fields) {
+                        System.out.println(" tcp Field " + (fieldn++) + ": [" + field + "]");
+                        int m = fieldn;
+                        String n = field;
+                    }
+
+                    if(fields[0].equals("sl")) {
+                        continue;
+                    }
+                    Connection connection = new Connection();
+                    connection.setPid(a);
+
+                    String src[] = fields[1].split(":", 2);
+                    String dst[] = fields[2].split(":", 2);
+
+                    connection.setSrc(getAddress6(src[0])); //get source IP address
+                    connection.setSpt(String.valueOf(getInt16(src[1])));
+                    connection.setDst(getAddress6(dst[0])); //get destination IP
+                    connection.setDpt(String.valueOf(getInt16(dst[1])));
+                    connection.setUid(fields[7]);
+
+                    ArrayList<String> seenIps = new ArrayList<String>();
+                    for (Connection tmp : connections){
+                        seenIps.add(tmp.getDst()); //the list of destination IPs seen so far
+                    }
+                    if (!seenIps.contains(connection.getSrc())){
+                        if(!(connection.getDst().equals("-1.-1.-1.-1") || connection.getDst().equals("0.0.0.0"))){
+                            connections.add(connection); //add the connection if it is unique
+                        }
+
+                    }
+
+                }
+                in.close();
+                allCon.add(connections);
+
+            }
+            catch(Exception e) {
+                System.out.println(" checknetlog() Exception: " + e.toString());
+            }
         }
     }
 
@@ -142,6 +212,20 @@ public class ConnectionFinder {
         }else {
             return chosenOne.getDst();
         }
+    }
+
+    public ArrayList<String> getAllIp(){
+        checkLogs();
+        ArrayList<String> ips = new ArrayList<String>();
+
+        for (ArrayList<Connection> cons : allCon){
+            for (Connection con : cons){
+                if(!(ips.contains(con.getDst()))){
+                    ips.add(con.getDst());
+                }
+            }
+        }
+        return ips;
     }
 
 }

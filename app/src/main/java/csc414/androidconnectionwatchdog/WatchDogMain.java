@@ -64,6 +64,8 @@ public class WatchDogMain extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList); //May have to change this layout to suit the gui.
         list.setAdapter(adapter); //Attach adapter to list view
 
+
+
         //TO TEST BAD IP
         //IpTest badIp = new IpTest("189.58.78.63");
         //IpInfo badIpInfo = badIp.getIpInfoObject();
@@ -150,6 +152,16 @@ public class WatchDogMain extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();     //Notify the adapter that the list has changed so it can update the gui.
 
+        //for Notification
+        ConnectionFinder conTest = new ConnectionFinder(aList.getProcElement(0).pid);
+        ArrayList<String> IPs = conTest.getAllIp();
+        for(String IP : IPs){
+            IpTest TestIt = new IpTest(IP);
+            IpInfo TestInfo = TestIt.getIpInfoObject();
+            TestInfo.getHoneyThreatScore();
+        }
+        //
+
     }
 
     public static void clearGUI(){
@@ -158,6 +170,8 @@ public class WatchDogMain extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
